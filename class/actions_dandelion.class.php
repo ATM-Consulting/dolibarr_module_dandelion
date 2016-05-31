@@ -1,0 +1,134 @@
+<?php
+/* <one line to give the program's name and a brief idea of what it does.>
+ * Copyright (C) 2015 ATM Consulting <support@atm-consulting.fr>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * \file    class/actions_dandelion.class.php
+ * \ingroup dandelion
+ * \brief   This file is an example hook overload class file
+ *          Put some comments here
+ */
+
+/**
+ * Class ActionsDandelion
+ */
+class ActionsDandelion
+{
+	/**
+	 * @var array Hook results. Propagated to $hookmanager->resArray for later reuse
+	 */
+	public $results = array();
+
+	/**
+	 * @var string String displayed by executeHook() immediately after return
+	 */
+	public $resprints;
+
+	/**
+	 * @var array Errors
+	 */
+	public $errors = array();
+
+	/**
+	 * Constructor
+	 */
+	public function __construct()
+	{
+	}
+
+	/**
+	 * Overloading the doActions function : replacing the parent's function with the one below
+	 *
+	 * @param   array()         $parameters     Hook metadatas (context, etc...)
+	 * @param   CommonObject    &$object        The object to process (an invoice if you are in invoice module, a propale in propale's module, etc...)
+	 * @param   string          &$action        Current action (if set). Generally create or edit or null
+	 * @param   HookManager     $hookmanager    Hook manager propagated to allow calling another hook
+	 * @return  int                             < 0 on error, 0 on success, 1 to replace standard code
+	 */
+	function formObjectOptions($parameters, &$object, &$action, $hookmanager)
+	{
+		$error = 0; // Error counter
+		
+		if (in_array('productcard', explode(':', $parameters['context'])) && $action === 'create')
+		{
+		  
+		  	global $langs,$db,$user,$conf;
+		  
+		  	$langs->load('dandelion@dandelion');
+		  
+		  	dol_include_once('/core/lib/functions2.lib.php');
+		  
+		  	$tags = ' '.$langs->trans('NewRef').' : ';
+		  	$table = $object->table_element;
+			
+			$res = $db->query("SELECT DISTINCT( SUBSTRING( ref,1, ".$conf->global->DANDELION_BASE_NB_CHAR." ) ) as l FROM ".MAIN_DB_PREFIX."$table ");
+			$TPrefix=array();
+		  	while($obj = $db->fetch_object($res)) {
+		  		$TPrefix[] = $obj->l;
+		  	}
+		  
+		  	$TNextRef = array();
+		  
+		  	foreach($TPrefix as $prefix) {
+		  		
+				$mask = $prefix.'{'.str_pad('', $conf->global->DANDELION_TOTAL_NB_CHAR - $conf->global->DANDELION_BASE_NB_CHAR,'0').'}';
+				
+				$TNextRef[] = get_next_value($db,$mask,$table,'ref'," AND ref LIKE '".$prefix."%' ");
+				
+		  	}
+			
+			foreach($TNextRef as $ref) {
+				
+				$tags.='<a href="javascript:;" onclick="$input.val(\''.$ref.'\'); " class="nextref">'.$ref.'</a> ';
+				
+			}
+		  
+		  	?>
+		  	<style type="text/css">
+		  		a.nextref {
+		  			font-size: 9px;
+		  			color:#fff;
+		  			background-color: #000066;
+		  			border-radius: 5px;
+		  			padding:5px;
+		  		}
+		  		a.nextref:nth-child(odd) {
+		  			background-color: #000099;	
+		  		}
+		  	</style>
+		  	<script type ="text/javascript">
+		  	$(document).ready(function() {
+		  		$input = $('div.fiche input[name=ref]').first();
+		  		$input.after("<?php echo addslashes($tags ) ?>");
+		  		
+		  	});
+		  	</script>
+		  	<?php
+		  
+		}
+
+		if (! $error)
+		{
+			return 0; // or return 1 to replace standard code
+		}
+		else
+		{
+			$this->errors[] = 'Error message';
+			return -1;
+		}
+	}
+}
