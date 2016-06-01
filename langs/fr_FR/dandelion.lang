@@ -7,3 +7,4 @@ DandelionSetup = Configuration du module Dandelion
 DandelionAbout = A propos du module Dandelion
 
 NewRef=Prochaine référence disponible
+set_DANDELION_DEFAULT_PREFIX=Préfixes de base (séparé par des virgules)

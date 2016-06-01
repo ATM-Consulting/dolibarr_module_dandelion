@@ -69,52 +69,66 @@ class ActionsDandelion
 		  	global $langs,$db,$user,$conf;
 		  
 		  	$langs->load('dandelion@dandelion');
-		  
-		  	dol_include_once('/core/lib/functions2.lib.php');
-		  
-		  	$tags = ' '.$langs->trans('NewRef').' : ';
 		  	$table = $object->table_element;
-			
-			$res = $db->query("SELECT DISTINCT( SUBSTRING( ref,1, ".$conf->global->DANDELION_BASE_NB_CHAR." ) ) as l FROM ".MAIN_DB_PREFIX."$table ");
-			$TPrefix=array();
-		  	while($obj = $db->fetch_object($res)) {
-		  		$TPrefix[] = $obj->l;
+		  
+		  	if(!empty($conf->global->DANDELION_DEFAULT_PREFIX)) {
+		  		$TPrefix = explode(',',$conf->global->DANDELION_DEFAULT_PREFIX);
+				dol_include_once('/core/lib/functions2.lib.php');
+		  
+		  		$tags = ' '.$langs->trans('NewRef').' : ';
+		  	
+			  	$TNextRef = array();
+			  
+			  	foreach($TPrefix as $prefix) {
+			  		
+					$mask = $prefix.'{'.str_pad('', $conf->global->DANDELION_TOTAL_NB_CHAR - strlen($prefix),'0').'}';
+					$TNextRef[] = get_next_value($db,$mask,$table,'ref'," AND ref LIKE '".$prefix."%' ");
+					
+			  	}
+				
+				foreach($TNextRef as $ref) {
+					$tags.='<a href="javascript:;" onclick="$input.val(\''.$ref.'\'); " class="nextref">'.$ref.'</a> ';
+				}
+				
+				
+			  	?>
+			  	<style type="text/css">
+			  		a.nextref {
+			  			font-size: 9px;
+			  			color:#fff;
+			  			background-color: #000066;
+			  			border-radius: 5px;
+			  			padding:5px;
+			  		}
+			  		a.nextref:nth-child(odd) {
+			  			background-color: #000099;	
+			  		}
+			  	</style><?php 	
 		  	}
 		  
-		  	$TNextRef = array();
-		  
-		  	foreach($TPrefix as $prefix) {
-		  		
-				$mask = $prefix.'{'.str_pad('', $conf->global->DANDELION_TOTAL_NB_CHAR - $conf->global->DANDELION_BASE_NB_CHAR,'0').'}';
-				
-				$TNextRef[] = get_next_value($db,$mask,$table,'ref'," AND ref LIKE '".$prefix."%' ");
-				
-		  	}
-			
-			foreach($TNextRef as $ref) {
-				
-				$tags.='<a href="javascript:;" onclick="$input.val(\''.$ref.'\'); " class="nextref">'.$ref.'</a> ';
-				
-			}
-		  
+		  	
 		  	?>
-		  	<style type="text/css">
-		  		a.nextref {
-		  			font-size: 9px;
-		  			color:#fff;
-		  			background-color: #000066;
-		  			border-radius: 5px;
-		  			padding:5px;
-		  		}
-		  		a.nextref:nth-child(odd) {
-		  			background-color: #000099;	
-		  		}
-		  	</style>
 		  	<script type ="text/javascript">
 		  	$(document).ready(function() {
 		  		$input = $('div.fiche input[name=ref]').first();
-		  		$input.after("<?php echo addslashes($tags ) ?>");
+		  		<?php
 		  		
+					if(!empty($tags)) {
+						echo '$input.after("'.addslashes($tags).'");';
+						
+					}		  		
+		  		?>
+		  		
+		  		
+		  		$input.autocomplete({
+			      source: "<?php echo dol_buildpath('/dandelion/script/interface.php?get=nextref&table='.$table,1) ?>",
+			      minLength: <?php echo (int)$conf->global->DANDELION_BASE_NB_CHAR ?>,
+			      select: function( event, ui ) {
+			       
+			       	$(this).val(ui.item.value);
+			       
+			      }
+			    });
 		  	});
 		  	</script>
 		  	<?php

@@ -131,6 +131,19 @@ print '<input type="text" name="DANDELION_TOTAL_NB_CHAR" size="3" value="'.$conf
 print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
 print '</form>';
 print '</td></tr>';
+// Example with a yes / no select
+$var=!$var;
+print '<tr '.$bc[$var].'>';
+print '<td>'.$langs->trans("set_DANDELION_DEFAULT_PREFIX").'</td>';
+print '<td align="center" width="20">&nbsp;</td>';
+print '<td align="right" width="300">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
+print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="action" value="set_DANDELION_DEFAULT_PREFIX">';
+print '<input type="text" name="DANDELION_DEFAULT_PREFIX" size="50" value="'.$conf->global->DANDELION_DEFAULT_PREFIX.'" />';
+print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
+print '</form>';
+print '</td></tr>';
 
 print '</table>';
 
