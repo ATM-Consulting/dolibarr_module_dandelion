@@ -63,7 +63,10 @@ class ActionsDandelion
 	{
 		$error = 0; // Error counter
 		
-		if (in_array('productcard', explode(':', $parameters['context'])) && $action === 'create')
+		if ((in_array('productcard', explode(':', $parameters['context'])) 
+			|| in_array('projectcard', explode(':', $parameters['context'])))
+		
+		&& $action === 'create')
 		{
 		  
 		  	global $langs,$db,$user,$conf;
@@ -71,8 +74,22 @@ class ActionsDandelion
 		  	$langs->load('dandelion@dandelion');
 		  	$table = $object->table_element;
 		  
+		  	if(in_array('projectcard', explode(':', $parameters['context']))){
+		  		$prefix_list =  $conf->global->DANDELION_DEFAULT_PREFIX_PROJECT;
+				$total_nb_char = $conf->global->DANDELION_TOTAL_NB_CHAR_PROJECT;
+				$nb_min_char = (int)$conf->global->DANDELION_BASE_NB_CHAR_PROJECT;
+			} 
+			else {
+				$prefix_list =  $conf->global->DANDELION_DEFAULT_PREFIX;
+				$total_nb_char = $conf->global->DANDELION_TOTAL_NB_CHAR;
+				$nb_min_char = (int)$conf->global->DANDELION_BASE_NB_CHAR;	
+			}
+		  
+		    
+		  
+		  
 		  	if(!empty($conf->global->DANDELION_DEFAULT_PREFIX)) {
-		  		$TPrefix = explode(',',$conf->global->DANDELION_DEFAULT_PREFIX);
+		  		$TPrefix = explode(',',$prefix_list);
 				dol_include_once('/core/lib/functions2.lib.php');
 		  
 		  		$tags = ' '.$langs->trans('NewRef').' : ';
@@ -81,9 +98,10 @@ class ActionsDandelion
 			  
 			  	foreach($TPrefix as $prefix) {
 			  		
-					$mask = $prefix.'{'.str_pad('', $conf->global->DANDELION_TOTAL_NB_CHAR - strlen($prefix),'0').'}';
-					$TNextRef[] = get_next_value($db,$mask,$table,'ref'," AND ref LIKE '".$prefix."%' ");
-					
+					$mask = $prefix.'{'.str_pad('', $total_nb_char - strlen($prefix),'0').'}';
+					//var_dump($mask,$table,$prefix);
+					$TNextRef[] = get_next_value($db,$mask,$table,'ref');
+					//var_dump($db->lastquery);
 			  	}
 				
 				foreach($TNextRef as $ref) {
@@ -122,7 +140,7 @@ class ActionsDandelion
 		  		
 		  		$input.autocomplete({
 			      source: "<?php echo dol_buildpath('/dandelion/script/interface.php?get=nextref&table='.$table,1) ?>",
-			      minLength: <?php echo (int)$conf->global->DANDELION_BASE_NB_CHAR ?>,
+			      minLength: <?php echo $nb_min_char; ?>,
 			      select: function( event, ui ) {
 			       
 			       	$(this).val(ui.item.value);

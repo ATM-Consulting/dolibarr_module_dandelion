@@ -104,6 +104,11 @@ print '<td>'.$langs->trans("Parameters").'</td>'."\n";
 print '<td align="center" width="20">&nbsp;</td>';
 print '<td align="center" width="100">'.$langs->trans("Value").'</td>'."\n";
 
+print '<tr class="liste_titre">';
+print '<td>'.$langs->trans("Product").'</td>'."\n";
+print '<td align="center" width="20">&nbsp;</td>';
+print '<td align="center" width="100">'.$langs->trans("Value").'</td>'."\n";
+
 
 // Example with a yes / no select
 $var=!$var;
@@ -144,6 +149,53 @@ print '<input type="text" name="DANDELION_DEFAULT_PREFIX" size="50" value="'.$co
 print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
 print '</form>';
 print '</td></tr>';
+
+print '<tr class="liste_titre">';
+print '<td>'.$langs->trans("Project").'</td>'."\n";
+print '<td align="center" width="20">&nbsp;</td>';
+print '<td align="center" width="100">'.$langs->trans("Value").'</td>'."\n";
+
+
+// Example with a yes / no select
+$var=!$var;
+print '<tr '.$bc[$var].'>';
+print '<td>'.$langs->trans("set_DANDELION_BASE_NB_CHAR_PROJECT").'</td>';
+print '<td align="center" width="20">&nbsp;</td>';
+print '<td align="right" width="300">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
+print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="action" value="set_DANDELION_BASE_NB_CHAR_PROJECT">';
+print '<input type="text" name="DANDELION_BASE_NB_CHAR_PROJECT" size="3" value="'.$conf->global->DANDELION_BASE_NB_CHAR_PROJECT.'" />';
+print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
+print '</form>';
+print '</td></tr>';
+// Example with a yes / no select
+$var=!$var;
+print '<tr '.$bc[$var].'>';
+print '<td>'.$langs->trans("set_DANDELION_TOTAL_NB_CHAR_PROJECT").'</td>';
+print '<td align="center" width="20">&nbsp;</td>';
+print '<td align="right" width="300">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
+print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="action" value="set_DANDELION_TOTAL_NB_CHAR_PROJECT">';
+print '<input type="text" name="DANDELION_TOTAL_NB_CHAR_PROJECT" size="3" value="'.$conf->global->DANDELION_TOTAL_NB_CHAR_PROJECT.'" />';
+print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
+print '</form>';
+print '</td></tr>';
+// Example with a yes / no select
+$var=!$var;
+print '<tr '.$bc[$var].'>';
+print '<td>'.$langs->trans("set_DANDELION_DEFAULT_PREFIX_PROJECT").'</td>';
+print '<td align="center" width="20">&nbsp;</td>';
+print '<td align="right" width="300">';
+print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
+print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="action" value="set_DANDELION_DEFAULT_PREFIX_PROJECT">';
+print '<input type="text" name="DANDELION_DEFAULT_PREFIX_PROJECT" size="50" value="'.$conf->global->DANDELION_DEFAULT_PREFIX_PROJECT.'" />';
+print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
+print '</form>';
+print '</td></tr>';
+
 
 print '</table>';
 

@@ -18,12 +18,23 @@ function _nextref($term,$table) {
 	global $db, $conf,$user,$langs;
 	
 	
+	if($table == 'projet'){
+  		$prefix_list =  $conf->global->DANDELION_DEFAULT_PREFIX_PROJECT;
+		$total_nb_char = $conf->global->DANDELION_TOTAL_NB_CHAR_PROJECT;
+		$nb_min_char = (int)$conf->global->DANDELION_BASE_NB_CHAR_PROJECT;
+	} 
+	else {
+		$prefix_list =  $conf->global->DANDELION_DEFAULT_PREFIX;
+		$total_nb_char = $conf->global->DANDELION_TOTAL_NB_CHAR;
+		$nb_min_char = (int)$conf->global->DANDELION_BASE_NB_CHAR;	
+	}
+	
 	dol_include_once('/core/lib/functions2.lib.php');
 		 
 	$sql = "SELECT DISTINCT( CHAR_LENGTH( ref) ) as l FROM ".MAIN_DB_PREFIX.$table." WHERE ref LIKE '".$term."%' ";
 	//echo $sql;
 	$res = $db->query($sql);
-	$TPrefix=array( $conf->global->DANDELION_TOTAL_NB_CHAR );
+	$TPrefix=array( $total_nb_char );
   	while($obj = $db->fetch_object($res)) {
   		$TPrefix[] = $obj->l;
   	}
