@@ -98,7 +98,7 @@ class ActionsDandelion
 			  
 			  	foreach($TPrefix as $prefix) {
 			  		
-					$mask = $prefix.'{'.str_pad('', $total_nb_char - strlen($prefix),'0').'}';
+					$mask = strpos($prefix,'{') === false ? $prefix.'{'.str_pad('', $total_nb_char - strlen($prefix),'0').'}' : $prefix;
 					//var_dump($mask,$table,$prefix);
 					$TNextRef[] = get_next_value($db,$mask,$table,'ref');
 					//var_dump($db->lastquery);

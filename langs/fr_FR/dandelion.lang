@@ -7,4 +7,9 @@ DandelionSetup = Configuration du module Dandelion
 DandelionAbout = A propos du module Dandelion
 
 NewRef=Prochaine référence disponible
-set_DANDELION_DEFAULT_PREFIX=Préfixes de base (séparé par des virgules)
+set_DANDELION_DEFAULT_PREFIX=Préfixes de base (séparé par des virgules. Formats {} acceptés)
+set_DANDELION_BASE_NB_CHAR=Nombre de charactère min.
+set_DANDELION_TOTAL_NB_CHAR=Longueur du masque si non défini
+set_DANDELION_BASE_NB_CHAR_PROJECT=Nombre de charactère min.
+set_DANDELION_TOTAL_NB_CHAR_PROJECT=Longueur du masque si non défini
+set_DANDELION_DEFAULT_PREFIX_PROJECT=Préfixes de base (séparé par des virgules. Formats {} acceptés)
