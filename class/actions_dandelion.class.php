@@ -78,17 +78,17 @@ class ActionsDandelion
 		  		$prefix_list =  $conf->global->DANDELION_DEFAULT_PREFIX_PROJECT;
 				$total_nb_char = $conf->global->DANDELION_TOTAL_NB_CHAR_PROJECT;
 				$nb_min_char = (int)$conf->global->DANDELION_BASE_NB_CHAR_PROJECT;
-			} 
+				$filter_on_entity = !empty($conf->global->MULTICOMPANY_PROJECT_SHARING_ENABLED) ? false : true;
+			}
 			else {
 				$prefix_list =  $conf->global->DANDELION_DEFAULT_PREFIX;
 				$total_nb_char = $conf->global->DANDELION_TOTAL_NB_CHAR;
 				$nb_min_char = (int)$conf->global->DANDELION_BASE_NB_CHAR;	
+				$filter_on_entity = !empty($conf->global->MULTICOMPANY_PRODUCT_SHARING_ENABLED) ? false : true;
 			}
 		  
-		    
 		  
-		  
-		  	if(!empty($conf->global->DANDELION_DEFAULT_PREFIX)) {
+		  	if(!empty($prefix_list)) {
 		  		$TPrefix = explode(',',$prefix_list);
 				dol_include_once('/core/lib/functions2.lib.php');
 		  
@@ -100,7 +100,7 @@ class ActionsDandelion
 			  		
 					$mask = strpos($prefix,'{') === false ? $prefix.'{'.str_pad('', $total_nb_char - strlen($prefix),'0').'}' : $prefix;
 					//var_dump($mask,$table,$prefix);
-					$TNextRef[] = get_next_value($db,$mask,$table,'ref');
+					$TNextRef[] = get_next_value($db,$mask,$table,'ref', '', '', '', 'next', $filter_on_entity);
 					//var_dump($db->lastquery);
 			  	}
 				
