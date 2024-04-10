@@ -19,14 +19,14 @@ function _nextref($term,$table) {
 	
 	
 	if($table == 'projet'){
-  		$prefix_list =  $conf->global->DANDELION_DEFAULT_PREFIX_PROJECT;
-		$total_nb_char = $conf->global->DANDELION_TOTAL_NB_CHAR_PROJECT;
-		$nb_min_char = (int)$conf->global->DANDELION_BASE_NB_CHAR_PROJECT;
+  		$prefix_list =  getDolGlobalString('DANDELION_DEFAULT_PREFIX_PROJECT');
+		$total_nb_char = getDolGlobalInt('DANDELION_TOTAL_NB_CHAR_PROJECT');
+		$nb_min_char = getDolGlobalInt('DANDELION_BASE_NB_CHAR_PROJECT');
 	} 
 	else {
-		$prefix_list =  $conf->global->DANDELION_DEFAULT_PREFIX;
-		$total_nb_char = $conf->global->DANDELION_TOTAL_NB_CHAR;
-		$nb_min_char = (int)$conf->global->DANDELION_BASE_NB_CHAR;	
+		$prefix_list =  getDolGlobalString('DANDELION_DEFAULT_PREFIX');
+		$total_nb_char = getDolGlobalInt('DANDELION_TOTAL_NB_CHAR');
+		$nb_min_char = getDolGlobalInt('DANDELION_BASE_NB_CHAR');
 	}
 	
 	dol_include_once('/core/lib/functions2.lib.php');
