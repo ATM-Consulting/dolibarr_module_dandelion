@@ -23,10 +23,12 @@
  *          Put some comments here
  */
 
+require_once __DIR__ . '/../backport/v19/core/class/commonhookactions.class.php';
+
 /**
  * Class ActionsDandelion
  */
-class ActionsDandelion
+class ActionsDandelion extends \dandelion\RetroCompatCommonHookActions
 {
 	/**
 	 * @var array Hook results. Propagated to $hookmanager->resArray for later reuse
@@ -75,15 +77,15 @@ class ActionsDandelion
 		  	$table = $object->table_element;
 		  
 		  	if(in_array('projectcard', explode(':', $parameters['context']))){
-		  		$prefix_list =  $conf->global->DANDELION_DEFAULT_PREFIX_PROJECT;
-				$total_nb_char = $conf->global->DANDELION_TOTAL_NB_CHAR_PROJECT;
-				$nb_min_char = (int)$conf->global->DANDELION_BASE_NB_CHAR_PROJECT;
+		  		$prefix_list =  getDolGlobalString('DANDELION_DEFAULT_PREFIX_PROJECT');
+				$total_nb_char = getDolGlobalInt('DANDELION_TOTAL_NB_CHAR_PROJECT');
+				$nb_min_char = getDolGlobalInt('DANDELION_BASE_NB_CHAR_PROJECT');
 				$filter_on_entity = !empty($conf->global->MULTICOMPANY_PROJECT_SHARING_ENABLED) ? false : true;
 			}
 			else {
-				$prefix_list =  $conf->global->DANDELION_DEFAULT_PREFIX;
-				$total_nb_char = $conf->global->DANDELION_TOTAL_NB_CHAR;
-				$nb_min_char = (int)$conf->global->DANDELION_BASE_NB_CHAR;	
+				$prefix_list =  getDolGlobalString('DANDELION_DEFAULT_PREFIX');
+				$total_nb_char = getDolGlobalInt('DANDELION_TOTAL_NB_CHAR');
+				$nb_min_char = getDolGlobalInt('$conf->global->DANDELION_BASE_NB_CHAR');
 				$filter_on_entity = !empty($conf->global->MULTICOMPANY_PRODUCT_SHARING_ENABLED) ? false : true;
 			}
 		  
