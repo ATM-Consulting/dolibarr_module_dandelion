@@ -11,3 +11,4 @@ set_DANDELION_TOTAL_NB_CHAR = Mask length if not defined
 set_DANDELION_BASE_NB_CHAR_PROJECT = Min. number of characters
 set_DANDELION_TOTAL_NB_CHAR_PROJECT = Mask length if not defined
 set_DANDELION_DEFAULT_PREFIX_PROJECT = Base prefixes (comma separated. {} formats accepted)
+NewRef = Next reference available
