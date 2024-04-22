@@ -49,7 +49,7 @@ function dandelionAdminPrepareHead()
     //$this->tabs = array(
     //	'entity:-tabname:Title:@dandelion:/dandelion/mypage.php?id=__ID__'
     //); // to remove a tab
-    complete_head_from_modules($conf, $langs, $object, $head, $h, 'dandelion');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'dandelion');
 
     return $head;
 }
